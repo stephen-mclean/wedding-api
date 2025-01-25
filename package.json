@@ -10,7 +10,10 @@
     "serve": "node dist/index.js",
     "dev": "nodemon src/index.ts",
     "lint": "eslint src/**/*.ts",
-    "format": "eslint src/**/*.ts --fix"
+    "format": "eslint src/**/*.ts --fix",
+    "db:migrate:create": "env-cmd npx mikro-orm-esm migration:create",
+    "db:migrate:up": "env-cmd npx mikro-orm-esm migration:up",
+    "db:migrate:down": "env-cmd npx mikro-orm-esm migration:down"
   },
   "author": "",
   "license": "ISC",
@@ -33,6 +36,7 @@
     "@typescript-eslint/eslint-plugin": "^8.12.2",
     "@typescript-eslint/parser": "^8.12.2",
     "concurrently": "^9.0.1",
+    "env-cmd": "^10.1.0",
     "eslint": "^9.14.0",
     "eslint-config-prettier": "^9.1.0",
     "module-alias": "^2.2.3",
