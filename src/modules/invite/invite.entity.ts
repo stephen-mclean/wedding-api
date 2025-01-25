@@ -26,4 +26,7 @@ export class Invite {
 
   @OneToMany("Guest", "invite")
   guests = new Collection<Guest>(this);
+
+  @Property({ length: 10 })
+  code!: string;
 }
