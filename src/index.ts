@@ -1,7 +1,13 @@
 import express from "express";
+import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import { RequestContext } from "@mikro-orm/core";
 import { initORM } from "./services/db.js";
+
+import {
+  createInviteSchema,
+  create,
+} from "./modules/invite/commands/create.js";
 
 dotenv.config();
 
@@ -10,6 +16,8 @@ async function bootstrap() {
   const app = express();
   const db = await initORM();
   const port = process.env.PORT || 3001;
+
+  app.use(bodyParser.json());
 
   app.use((req, res, next) => {
     RequestContext.create(db.em, next);
@@ -21,6 +29,12 @@ async function bootstrap() {
 
   app.get("/", (req, res) => {
     res.json({ message: "Dummy API Response" });
+  });
+
+  app.post("/invite", async (req, res) => {
+    const body = createInviteSchema.parse(req.body);
+    const invite = await create(body);
+    res.json(invite);
   });
 
   app.listen(port, () => {

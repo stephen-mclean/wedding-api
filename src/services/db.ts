@@ -17,3 +17,7 @@ export async function initORM() {
     em: orm.em,
   });
 }
+
+export function getServices() {
+  return cache;
+}
