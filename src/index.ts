@@ -8,6 +8,10 @@ import {
   createInviteSchema,
   create,
 } from "./modules/invite/commands/create.js";
+import {
+  updateInviteSchema,
+  update,
+} from "./modules/invite/commands/update.js";
 
 dotenv.config();
 
@@ -34,6 +38,12 @@ async function bootstrap() {
   app.post("/invite", async (req, res) => {
     const body = createInviteSchema.parse(req.body);
     const invite = await create(body);
+    res.json(invite);
+  });
+
+  app.put("/invite/:id", async (req, res) => {
+    const body = updateInviteSchema.parse(req.body);
+    const invite = await update(body);
     res.json(invite);
   });
 
