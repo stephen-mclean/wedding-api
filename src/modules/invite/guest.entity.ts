@@ -1,4 +1,10 @@
-import { Entity, PrimaryKey, Property, ManyToOne } from "@mikro-orm/core";
+import {
+  Entity,
+  PrimaryKey,
+  Property,
+  ManyToOne,
+  Cascade,
+} from "@mikro-orm/core";
 import { Invite } from "./invite.entity.js";
 
 @Entity()
@@ -12,6 +18,6 @@ export class Guest {
   @Property()
   isAttending!: boolean;
 
-  @ManyToOne()
+  @ManyToOne({ cascade: [Cascade.REMOVE] })
   invite!: Invite;
 }
