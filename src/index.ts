@@ -12,6 +12,7 @@ import {
   updateInviteSchema,
   update,
 } from "./modules/invite/commands/update.js";
+import { get } from "./modules/invite/commands/get.js";
 
 dotenv.config();
 
@@ -36,15 +37,32 @@ async function bootstrap() {
   });
 
   app.post("/invite", async (req, res) => {
-    const body = createInviteSchema.parse(req.body);
-    const invite = await create(body);
-    res.json(invite);
+    try {
+      const body = createInviteSchema.parse(req.body);
+      const invite = await create(body);
+      res.json(invite);
+    } catch {
+      res.status(400).json({ error: "Failed to create invite" });
+    }
   });
 
   app.put("/invite/:id", async (req, res) => {
-    const body = updateInviteSchema.parse(req.body);
-    const invite = await update(body);
-    res.json(invite);
+    try {
+      const body = updateInviteSchema.parse(req.body);
+      const invite = await update(body);
+      res.json(invite);
+    } catch {
+      res.status(400).json({ error: "Failed to update invite" });
+    }
+  });
+
+  app.get("/invite/:code", async (req, res) => {
+    try {
+      const invite = await get(req.params.code);
+      res.json(invite);
+    } catch {
+      res.status(404).json({ error: "Invite not found" });
+    }
   });
 
   app.listen(port, () => {
