@@ -14,6 +14,7 @@ import {
 } from "./modules/invite/commands/update.js";
 import { get } from "./modules/invite/commands/get.js";
 import { list } from "./modules/invite/commands/list.js";
+import { deleteInvite } from "./modules/invite/commands/delete.js";
 
 dotenv.config();
 
@@ -72,6 +73,15 @@ async function bootstrap() {
       res.json(invites);
     } catch {
       res.status(400).json({ error: "Failed to list invites" });
+    }
+  });
+
+  app.delete("/invite/:id", async (req, res) => {
+    try {
+      await deleteInvite(Number(req.params.id));
+      res.json({ message: "Invite deleted" });
+    } catch {
+      res.status(400).json({ error: "Failed to delete invite" });
     }
   });
 
