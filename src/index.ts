@@ -13,6 +13,7 @@ import {
   update,
 } from "./modules/invite/commands/update.js";
 import { get } from "./modules/invite/commands/get.js";
+import { list } from "./modules/invite/commands/list.js";
 
 dotenv.config();
 
@@ -62,6 +63,15 @@ async function bootstrap() {
       res.json(invite);
     } catch {
       res.status(404).json({ error: "Invite not found" });
+    }
+  });
+
+  app.get("/invites", async (req, res) => {
+    try {
+      const invites = await list();
+      res.json(invites);
+    } catch {
+      res.status(400).json({ error: "Failed to list invites" });
     }
   });
 
