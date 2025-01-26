@@ -7,7 +7,9 @@ import { Invite } from "../invite.entity.js";
 
 const guestSchema = z.object({
   id: z.number(),
-  isAttending: z.boolean(),
+  isAttending: z.boolean().optional(),
+  isPlusOne: z.boolean().optional(),
+  name: z.string().optional(),
 });
 
 export const updateInviteSchema = z.object({
@@ -36,7 +38,11 @@ export async function update({ id, notes, guests }: UpdateProps) {
   for (const guest of guests) {
     const g = await services.em.findOne(Guest, { id: guest.id });
     if (!g) throw new Error("Guest not found");
-    wrap(g).assign({ isAttending: guest.isAttending });
+    wrap(g).assign({
+      isAttending: guest.isAttending,
+      isPlusOne: guest.isPlusOne,
+      name: guest.name,
+    });
   }
 
   await services.em.flush();
