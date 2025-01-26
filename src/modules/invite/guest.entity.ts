@@ -15,7 +15,7 @@ export class Guest {
   @Property({ length: 100 })
   name!: string;
 
-  @Property()
+  @Property({ nullable: true })
   isAttending!: boolean;
 
   @ManyToOne({ cascade: [Cascade.REMOVE] })
