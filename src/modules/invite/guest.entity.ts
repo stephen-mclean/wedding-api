@@ -18,6 +18,9 @@ export class Guest {
   @Property({ nullable: true })
   isAttending!: boolean;
 
+  @Property({ default: false })
+  isPlusOne!: boolean;
+
   @ManyToOne({ cascade: [Cascade.REMOVE] })
   invite!: Invite;
 }

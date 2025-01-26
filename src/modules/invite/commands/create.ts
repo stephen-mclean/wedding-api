@@ -5,6 +5,7 @@ import { z } from "zod";
 
 const guestSchema = z.object({
   name: z.string().min(1),
+  isPlusOne: z.boolean().optional(),
 });
 
 export const createInviteSchema = z.object({
@@ -39,6 +40,7 @@ export async function create({ notes, guests }: CreateProps) {
     const g = new Guest();
     g.name = guest.name;
     g.invite = invite;
+    g.isPlusOne = guest.isPlusOne ?? false;
     services.em.persist(g);
   }
 

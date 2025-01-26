@@ -114,6 +114,16 @@
           "nullable": true,
           "mappedType": "boolean"
         },
+        "is_plus_one": {
+          "name": "is_plus_one",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
         "invite_id": {
           "name": "invite_id",
           "type": "int",
