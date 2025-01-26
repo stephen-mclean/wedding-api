@@ -9,7 +9,7 @@ const guestSchema = z.object({
 });
 
 export const createInviteSchema = z.object({
-  notes: z.string(),
+  notes: z.string().optional(),
   guests: z.array(guestSchema),
 });
 
@@ -33,7 +33,7 @@ export async function create({ notes, guests }: CreateProps) {
 
   const invite = new Invite();
 
-  invite.notes = notes;
+  invite.notes = notes ?? "";
   invite.code = generateInviteCode();
 
   for (const guest of guests) {
