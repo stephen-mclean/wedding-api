@@ -7,7 +7,7 @@ import { Invite } from "../invite.entity.js";
 
 const guestSchema = z.object({
   id: z.number(),
-  isAttending: z.boolean().optional(),
+  isAttending: z.boolean().optional().nullable(),
   isPlusOne: z.boolean().optional(),
   name: z.string().optional(),
 });
@@ -36,13 +36,25 @@ export async function update({ id, notes, guests }: UpdateProps) {
   wrap(invite).assign({ notes, submitCount: invite.submitCount + 1 });
 
   for (const guest of guests) {
-    const g = await services.em.findOne(Guest, { id: guest.id });
-    if (!g) throw new Error("Guest not found");
-    wrap(g).assign({
-      isAttending: guest.isAttending,
-      isPlusOne: guest.isPlusOne,
-      name: guest.name,
-    });
+    const g = await services.em.findOne(Guest, { id: guest.id, invite });
+    if (!g) {
+      const newGuest = new Guest();
+      newGuest.invite = invite;
+      newGuest.name = guest.name ?? "";
+      if (guest.isPlusOne !== undefined) {
+        newGuest.isPlusOne = guest.isPlusOne;
+      }
+      if (guest.isAttending !== undefined && guest.isAttending !== null) {
+        newGuest.isAttending = guest.isAttending;
+      }
+      services.em.persist(newGuest);
+    } else {
+      wrap(g).assign({
+        isAttending: guest.isAttending,
+        isPlusOne: guest.isPlusOne,
+        name: guest.name,
+      });
+    }
   }
 
   await services.em.flush();
